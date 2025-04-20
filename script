@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Проверяем, передан ли параметр
+if [ -z "$1" ]; then
+  echo "Ошибка: Не указаны серверы"
+  echo "Использование: $0 <server1,server2>"
+  exit 1
+fi
+
+# Разделяем входную строку по запятым
+IFS=',' read -ra SERVERS <<< "$1"
+
+# Генерируем файл inventory.ini
+cat > ansible/inventory.ini <<EOF
+[databases]
+EOF
+
+# Добавляем каждый сервер в секцию [all]
+for server in "${SERVERS[@]}"; do
+  # Удаляем возможные пробелы в начале/конце
+  server_clean=$(echo "$server ansible_user=root" | xargs)
+  echo "$server_clean" >> ansible/inventory.ini
+done
+
+# Добавляем пример групп (можно модифицировать по необходимости)
+cat >> ansible/inventory.ini <<EOF
+
+[target_host]
+EOF
+
+echo "Файл inventory.ini успешно создан"
+
+cd ansible
+ansible-playbook -i inventory.ini playbook.yaml

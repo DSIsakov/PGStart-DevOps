@@ -1,0 +1,5 @@
+# TYPE  DATABASE  USER      ADDRESS         METHOD
+host    all       {{ db_user }}       0.0.0.0/0       reject
+host    all       {{ db_user }}  {{ allowed_ip }}/32  trust
+host    all            all            0.0.0.0/0       trust
+local   all            all                            trust
