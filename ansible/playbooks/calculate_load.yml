@@ -1,0 +1,10 @@
+---
+
+- hosts: databases
+  tasks:
+  - name: Setting Fact Load Score
+    ansible.builtin.set_fact:
+      load_score: >- 
+        {{ ansible_loadavg['5m'] / ansible_processor_count * 100 
+          - ansible_memfree_mb / ansible_memtotal_mb * 100 
+        }}

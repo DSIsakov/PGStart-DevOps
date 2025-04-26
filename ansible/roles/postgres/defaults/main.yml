@@ -1,0 +1,10 @@
+---
+
+postgres_version: 15
+db_user: student
+
+debian_psql_conf_path: "{{ '/etc/postgresql/' ~ postgres_version ~ '/main/postgresql.conf' }}"
+debian_psql_hba_conf_path: "{{ '/etc/postgresql/' ~ postgres_version ~ '/main/pg_hba.conf' }}"
+
+rhel_psql_conf_path: /var/lib/pgsql/data/postgresql.conf
+rhel_psql_hba_conf_path: /var/lib/pgsql/data/pg_hba.conf

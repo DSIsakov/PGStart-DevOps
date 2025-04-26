@@ -1,98 +1,10 @@
-- name: Calculate Load
-  hosts: databases
-  tasks:
-  - name: Setting Fact Load Score
-    ansible.builtin.set_fact:
-      load_score: >- 
-        {{ ansible_loadavg['5m'] / ansible_processor_count * 100 
-          - ansible_memfree_mb / ansible_memtotal_mb * 100 
-        }}
+---
 
+- import_playbook: playbooks/calculate_load.yml
+- import_playbook: playbooks/select_target_host.yml
 
-- name: Select Target Host
-  hosts: localhost
-  gather_facts: false
-  tasks:
-  - name: Getting Load Scores By Host
-    ansible.builtin.set_fact:
-      scores: >-
-        [{% for host in groups['databases'] %}
-          {
-            "host": "{{ host }}",
-            "load_score": "{{ hostvars[host].load_score }}"
-          },
-        {% endfor %}]
-  - name: Getting Load Score Min
-    ansible.builtin.set_fact:
-      target_host: "{{ scores | sort(attribute='load_score') | first }}"
-  - name: Adding Target Host Into Inventory
-    ansible.builtin.add_host:
-      name: "{{ target_host.host }}"
-      groups:
-        - target_host
-  - name: Printing Hostgroup
-    ansible.builtin.debug:
-      msg: "{{ groups['target_host'] }}"
-
-
-- name: Install And Configure PostgreSQL
+- name: Install and Configure PostgreSQL and Firewall
   hosts: target_host
-  gather_facts: false
-  become: yes
-  vars:
-    postgres_version: 15
-    db_user: student
-    allowed_ip: "{{ groups['databases'][0] if groups['databases'][0] != ansible_host else groups['databases'][1]}}"
-  tasks:
-  - name: Install PostgreSQL (Debian)
-    apt:
-      name: postgresql-{{ postgres_version }}
-      state: present
-    when: ansible_os_family == 'Debian'
-
-  - name: Install PostgreSQL (RHEL)
-    yum:
-      name: postgresql-server
-      state: present
-    when: ansible_os_family == 'RedHat'
-
-  - name: Check if PostgreSQL is initialized
-    ansible.builtin.stat:
-      path: /var/lib/pgsql/data/postgresql.conf
-    register: pg_initialized
-    when: ansible_os_family == 'RedHat'
-
-  - name: Initialize PostgreSQL DB
-    ansible.builtin.command: postgresql-setup --initdb
-    when:
-      - ansible_os_family == 'RedHat'
-      - not pg_initialized.stat.exists
-    changed_when: true
-
-  - name: Configuring PostgreSQL 1/2
-    ansible.builtin.template:
-      src: files/postgresql.conf
-      dest: "{{ '/etc/postgresql/' ~ postgres_version ~ '/main/postgresql.conf' if ansible_os_family == 'Debian' else '/var/lib/pgsql/data/postgresql.conf' }}"
-      owner: postgres
-      group: postgres
-    notify: restart postgres
-
-  - name: Configuring PostgreSQL 2/2
-    ansible.builtin.template:
-      src: templates/pg_hba.conf.j2
-      dest: "{{ '/etc/postgresql/' ~ postgres_version ~ '/main/pg_hba.conf' if ansible_os_family == 'Debian' else '/var/lib/pgsql/data/pg_hba.conf' }}"
-      owner: postgres
-      group: postgres
-    notify: restart postgres
-
-  - name: Ensure PostgreSQL service is running
-    ansible.builtin.service:
-      name: postgresql
-      state: started
-      enabled: yes
-
-  handlers:
-    - name: restart postgres
-      service:
-        name: "postgresql"
-        state: restarted
+  roles:
+    - postgres
+    - firewall

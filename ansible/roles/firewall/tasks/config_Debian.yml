@@ -1,0 +1,27 @@
+---
+
+- name: Installing ufw
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+    update_cache: yes
+
+- name: Ensuring ufw is disabled
+  ansible.builtin.ufw:
+    state: disabled
+
+- name: Configuring ufw (1/2)
+  ansible.builtin.ufw:
+    rule: allow
+    port: "{{ ssh_port }}"
+    proto: tcp
+
+- name: Configuring ufw (2/2)
+  ansible.builtin.ufw:
+    rule: allow
+    port: "{{ psql_port }}"
+    proto: tcp
+
+- name: Ensuring ufw is enabled
+  ansible.builtin.ufw:
+    state: enabled

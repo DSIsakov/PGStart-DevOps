@@ -1,0 +1,25 @@
+---
+
+- hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Getting Load Scores By Host
+    ansible.builtin.set_fact:
+      scores: >-
+        [{% for host in groups['databases'] %}
+          {
+            "host": "{{ host }}",
+            "load_score": "{{ hostvars[host].load_score }}"
+          },
+        {% endfor %}]
+  - name: Getting Load Score Min
+    ansible.builtin.set_fact:
+      target_host: "{{ scores | sort(attribute='load_score') | first }}"
+  - name: Adding Target Host Into Inventory
+    ansible.builtin.add_host:
+      name: "{{ target_host.host }}"
+      groups:
+        - target_host
+  - name: Printing Hostgroup
+    ansible.builtin.debug:
+      msg: "{{ groups['target_host'] }}"

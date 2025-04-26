@@ -1,0 +1,3 @@
+---
+
+allowed_ip: "{{ groups['databases'][0] if groups['databases'][0] != ansible_host else groups['databases'][1]}}"
