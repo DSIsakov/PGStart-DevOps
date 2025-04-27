@@ -2,7 +2,9 @@
 
 - name: Installing PostgreSQL
   yum:
-    name: postgresql-server
+    name: 
+      - postgresql-server
+      - python3-psycopg2
     state: present
 
 - name: Checking if PostgreSQL is initialized

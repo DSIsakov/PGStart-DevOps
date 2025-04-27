@@ -2,6 +2,8 @@
 
 - name: Installing PostgreSQL
   apt:
-    name: "postgresql-{{ postgres_version }}"
+    name: 
+      - "postgresql-{{ postgres_version }}"
+      - python3-psycopg2
     state: present
     update_cache: yes

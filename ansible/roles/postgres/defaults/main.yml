@@ -2,6 +2,8 @@
 
 postgres_version: 15
 db_user: student
+test_db_name: test
+psql_port: 5432
 
 debian_psql_conf_path: "{{ '/etc/postgresql/' ~ postgres_version ~ '/main/postgresql.conf' }}"
 debian_psql_hba_conf_path: "{{ '/etc/postgresql/' ~ postgres_version ~ '/main/pg_hba.conf' }}"

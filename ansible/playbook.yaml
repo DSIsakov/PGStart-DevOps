@@ -8,3 +8,9 @@
   roles:
     - postgres
     - firewall
+  tasks:
+    - name: Testing PostgreSQL
+      community.postgresql.postgresql_query:
+        login_db: "{{ test_db_name }}"
+        login_user: "{{ db_user }}"
+        query: SELECT 1;

@@ -1,0 +1,44 @@
+Файл inventory.ini успешно создан
+ansible-playbook [core 2.18.4]
+  config file = None
+  configured module search path = ['/Users/ds/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /opt/homebrew/Cellar/ansible/11.4.0/libexec/lib/python3.13/site-packages/ansible
+  ansible collection location = /Users/ds/.ansible/collections:/usr/share/ansible/collections
+  executable location = /opt/homebrew/bin/ansible-playbook
+  python version = 3.13.2 (main, Feb  4 2025, 14:51:09) [Clang 16.0.0 (clang-1600.0.26.6)] (/opt/homebrew/Cellar/ansible/11.4.0/libexec/bin/python)
+  jinja version = 3.1.6
+  libyaml = True
+No config file found; using defaults
+host_list declined parsing /Users/ds/Documents/GitHub/PGStart-DevOps/ansible/inventory.ini as it did not pass its verify_file() method
+script declined parsing /Users/ds/Documents/GitHub/PGStart-DevOps/ansible/inventory.ini as it did not pass its verify_file() method
+auto declined parsing /Users/ds/Documents/GitHub/PGStart-DevOps/ansible/inventory.ini as it did not pass its verify_file() method
+yaml declined parsing /Users/ds/Documents/GitHub/PGStart-DevOps/ansible/inventory.ini as it did not pass its verify_file() method
+Parsed /Users/ds/Documents/GitHub/PGStart-DevOps/ansible/inventory.ini inventory source with ini plugin
+statically imported: /Users/ds/Documents/GitHub/PGStart-DevOps/ansible/roles/postgres/tasks/install_Debian.yml
+statically imported: /Users/ds/Documents/GitHub/PGStart-DevOps/ansible/roles/postgres/tasks/config_Debian.yml
+statically imported: /Users/ds/Documents/GitHub/PGStart-DevOps/ansible/roles/postgres/tasks/install_RHEL.yml
+redirecting (type: action) ansible.builtin.yum to ansible.builtin.dnf
+statically imported: /Users/ds/Documents/GitHub/PGStart-DevOps/ansible/roles/postgres/tasks/config_RHEL.yml
+statically imported: /Users/ds/Documents/GitHub/PGStart-DevOps/ansible/roles/postgres/tasks/create_user.yml
+statically imported: /Users/ds/Documents/GitHub/PGStart-DevOps/ansible/roles/firewall/tasks/config_Debian.yml
+redirecting (type: modules) ansible.builtin.ufw to community.general.ufw
+redirecting (type: modules) ansible.builtin.ufw to community.general.ufw
+redirecting (type: modules) ansible.builtin.ufw to community.general.ufw
+redirecting (type: modules) ansible.builtin.ufw to community.general.ufw
+statically imported: /Users/ds/Documents/GitHub/PGStart-DevOps/ansible/roles/firewall/tasks/config_RHEL.yml
+redirecting (type: action) ansible.builtin.yum to ansible.builtin.dnf
+Skipping callback 'default', as we already have a stdout callback.
+Skipping callback 'minimal', as we already have a stdout callback.
+Skipping callback 'oneline', as we already have a stdout callback.
+
+PLAYBOOK: playbook.yaml ********************************************************
+3 plays in playbook.yaml
+
+PLAY [databases] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+task path: /Users/ds/Documents/GitHub/PGStart-DevOps/ansible/playbooks/calculate_load.yml:3
+<10.211.55.19> ESTABLISH SSH CONNECTION FOR USER: root
+<10.211.55.19> SSH: EXEC ssh -vvv -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="root"' -o ConnectTimeout=10 -o 'ControlPath="/Users/ds/.ansible/cp/dd19747f8a"' 10.211.55.19 '/bin/sh -c '"'"'echo ~root && sleep 0'"'"''
+<10.211.55.20> ESTABLISH SSH CONNECTION FOR USER: root
+<10.211.55.20> SSH: EXEC ssh -vvv -C -o ControlMaster=auto -o ControlPersist=60s -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="root"' -o ConnectTimeout=10 -o 'ControlPath="/Users/ds/.ansible/cp/849b20e6b8"' 10.211.55.20 '/bin/sh -c '"'"'echo ~root && sleep 0'"'"''

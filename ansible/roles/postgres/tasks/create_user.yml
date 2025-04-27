@@ -1,0 +1,21 @@
+---
+
+- name: Ensuring PostgreSQL is enabled and restarted
+  service: 
+    name: postgresql
+    enabled: true
+    state: restarted
+
+- name: Create PostgreSQL user
+  become_user: postgres
+  community.postgresql.postgresql_user:
+    name: "{{ db_user }}"
+    role_attr_flags: "LOGIN,CREATEDB"
+    state: present
+
+- name: Creating Test Database
+  become_user: postgres
+  community.postgresql.postgresql_db:
+      name: "{{ test_db_name }}"
+      owner: "{{ db_user }}"
+      state: present

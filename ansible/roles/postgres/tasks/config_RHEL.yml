@@ -1,6 +1,6 @@
 ---
 
-- name: Configuring PostgreSQL 1/2
+- name: Configuring PostgreSQL 1/3
   ansible.builtin.lineinfile:
     path: "{{ rhel_psql_conf_path }}"
     regexp: "(#|^)listen_addresses"
@@ -8,10 +8,17 @@
     owner: postgres
     group: postgres
 
-- name: Configuring PostgreSQL 2/2
+- name: Configuring PostgreSQL 2/3
+  ansible.builtin.lineinfile:
+    path: "{{ rhel_psql_conf_path }}"
+    regexp: "(#|^)port"
+    line: "port = {{psql_port}}"
+    owner: postgres
+    group: postgres
+
+- name: Configuring PostgreSQL 2/3
   ansible.builtin.template:
     src: pg_hba.conf.j2
     dest: "{{ rhel_psql_hba_conf_path }}"
     owner: postgres
     group: postgres
-  notify: restart postgres
